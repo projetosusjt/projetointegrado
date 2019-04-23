@@ -1,5 +1,7 @@
 package br.com.projetointegrado.service;
 
+import java.util.ArrayList;
+
 import br.com.projetointegrado.DAO.GrupoDAO;
 import br.com.projetointegrado.model.Grupo;
 
@@ -17,12 +19,15 @@ public class GrupoService {
 	public void atualizar(Grupo to) {
 		dao.atualizarGrupo(to);
 	}
-	public void excluir(Grupo to) {
-		dao.excluirGrupo(to);
+	public void excluir(int id) {
+		dao.excluirGrupo(id);
 	}
 	public Grupo carregar(int id) {
 		Grupo to = dao.carregarGrupo(id);
 		return to;
 	}
-
+	public ArrayList<Grupo> findAll() {
+		ArrayList<Grupo> to = dao.findAll();
+		return to;
+	}
 }

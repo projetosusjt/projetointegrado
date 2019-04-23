@@ -17,7 +17,7 @@ public class ConnectionFactory {
 	public static Connection obtemConexao() throws SQLException {
 		return DriverManager
 				
-		.getConnection("jdbc:mysql://localhost/br.com.projetointegrado.conexao?"
+		.getConnection("jdbc:mysql://localhost/mydb2?"
 				+ "useTimezone=true&serverTimezone=UTC&autoReconnect=true&useSSL=false", "root", "henrique");
 		}
 

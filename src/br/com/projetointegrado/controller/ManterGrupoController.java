@@ -1,6 +1,7 @@
 package br.com.projetointegrado.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -8,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import br.com.projetointegrado.model.Grupo;
 import br.com.projetointegrado.service.GrupoService;
@@ -28,28 +30,68 @@ public class ManterGrupoController extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		//int pGrupo_id = Integer.parseInt(request.getParameter("id"));
+		String pAcao = request.getParameter("acao");
 		int pNumero = Integer.parseInt(request.getParameter("numero"));
 		String pNome = request.getParameter("nome");
 		
+		
 		//instanciar o javabean
 		Grupo grupo = new Grupo();
-		//grupo.setGrupo_id(pGrupo_id);
+		//grupo.setGrupo_id(grupo.getGrupo_id());
 		grupo.setNumero(pNumero);
 		grupo.setGrupo_nome(pNome);
 		
 		//instanciar o service
 		GrupoService cs = new GrupoService();
-		cs.criar(grupo);
-		//grupo = cs.carregar(grupo.getGrupo_id());
+		RequestDispatcher view = null;   
+		HttpSession session = request.getSession(); 
+		//cs.carregar(grupo.getGrupo_id());
 		
-		request.setAttribute("grupo", grupo);
-        
-        RequestDispatcher view = 
-        request.getRequestDispatcher("Grupo.jsp");
-        view.forward(request, response);
+		if (pAcao.equals("Criar")) {    
+			cs.criar(grupo);    
+			ArrayList<Grupo>lista = new ArrayList<>();    
+			lista.add(grupo);    
+			session.setAttribute("lista", lista);    
+			view = request.getRequestDispatcher("ListarGrupos.jsp"); 
+		} else if (pAcao.equals("Excluir")) {    
+			cs.excluir(grupo.getGrupo_id());    
+			ArrayList<Grupo>lista = (ArrayList<Grupo>)session.getAttribute("lista");    
+			lista.remove(busca(grupo, lista));    
+			session.setAttribute("lista", lista);    
+			view = request.getRequestDispatcher("ListarGrupos.jsp");
+		} else if (pAcao.equals("Alterar")) {    
+			cs.atualizar(grupo);    
+			ArrayList<Grupo>lista = (ArrayList<Grupo>)session.getAttribute("lista");    
+			int pos = busca(grupo, lista);    
+			lista.remove(pos);    
+			lista.add(pos, grupo);    
+			session.setAttribute("lista", lista);    
+			request.setAttribute("grupo", grupo);    
+			view = request.getRequestDispatcher("VisualizarGrupo.jsp");
+		} else if (pAcao.equals("Visualizar")) {    
+			grupo = cs.carregar(grupo.getGrupo_id());    
+			request.setAttribute("cliente", grupo);    
+			view = request.getRequestDispatcher("VisualizarGrupo.jsp");
+		} else if (pAcao.equals("Editar")) {    
+			grupo = cs.carregar(grupo.getGrupo_id());    
+			request.setAttribute("grupo", grupo);    
+			view = request.getRequestDispatcher("AlterarGrupo.jsp");
+		}
+		
+		view.forward(request, response);
         
     }
+	
+	public int busca(Grupo grupo, ArrayList<Grupo> lista) {   
+		Grupo to;   
+		for(int i = 0; i<lista.size(); i++){    
+			to = lista.get(i);    
+			if(to.getGrupo_id() == grupo.getGrupo_id()){     
+				return i;    
+			}   
+		}   
+		return -1;  
+	} 
 
 }
 

@@ -8,6 +8,10 @@ public class Atividade {
 	private Calendar dt_inicio, dt_fim;
 	private Tema tema;
 
+	public Atividade() {
+		super();
+	}
+
 	public Atividade(int atividade_id, int numero, String descricao, String formato, Calendar dt_inicio,
 			Calendar dt_fim, Tema tema) {
 		super();

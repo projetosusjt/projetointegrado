@@ -4,22 +4,23 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import br.com.projetointegrado.conexao.ConnectionFactory;
 import br.com.projetointegrado.model.Grupo;
 //import br.com.projetointegrado.model.Professor;
 
 
+
 public class GrupoDAO {
 
 	public void criarGrupo(Grupo to) {
-		String sqlInsert = "INSERT INTO grupo(id, orientador_id, numero, nome) VALUES (?, ?, ?, ?)";
+		String sqlInsert = "INSERT INTO grupo(orientador_id, numero, nome) VALUES (?, ?, ?)";
 		try (Connection conn = ConnectionFactory.obtemConexao();
 				PreparedStatement stm = conn.prepareStatement(sqlInsert);) {
-			stm.setInt(1, to.getGrupo_id());
-			stm.setObject(2, to.getOrientador());
-			stm.setInt(3, to.getNumero());  
-			stm.setString(4, to.getGrupo_nome());
+			stm.setObject(1, to.getOrientador());
+			stm.setInt(2, to.getNumero());  
+			stm.setString(3, to.getGrupo_nome());
 			stm.execute();
 			String sqlQuery = "SELECT LAST_INSERT_ID()";
 			try(PreparedStatement stm2 = conn.prepareStatement(sqlQuery);
@@ -47,11 +48,11 @@ public class GrupoDAO {
 			e.printStackTrace();
 		}
 	}
-	public void excluirGrupo(Grupo to) {
+	public void excluirGrupo(int id) {
 		String sqlDelete = "DELETE FROM grupo WHERE id = ?";
 		try (Connection conn = ConnectionFactory.obtemConexao();
 				PreparedStatement stm = conn.prepareStatement(sqlDelete);) {
-			stm.setInt(1, to.getGrupo_id());
+			stm.setInt(1, id);
 			stm.execute();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -87,4 +88,25 @@ public class GrupoDAO {
 		}
 		return to;
     }
+	public ArrayList<Grupo> findAll() {
+		ArrayList<Grupo> lista = new ArrayList<Grupo>();
+		String sqlSelect = "SELECT * FROM grupo";
+		try (Connection conn = ConnectionFactory.obtemConexao();
+				PreparedStatement stm = conn.prepareStatement(sqlSelect);) {
+			try (ResultSet rs = stm.executeQuery();) {
+				while (rs.next()) {
+					Grupo to = new Grupo();
+					to.setGrupo_nome(rs.getString("nome"));
+					to.setNumero(rs.getInt("numero"));
+					to.setGrupo_id(rs.getInt("id"));
+					lista.add(to);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		} catch (SQLException e1) {
+			System.out.print(e1.getStackTrace());
+		}
+		return lista;
+	}
 }

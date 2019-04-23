@@ -9,6 +9,10 @@ public class Entrega {
 	private Calendar dt_entrega;
 	private Avaliacao avaliacao;
 
+	public Entrega() {
+		super();
+	}
+
 	public Entrega(Atividade atividade, Grupo grupo, int entrega_id, Calendar dt_entrega) {
 		super();
 		this.atividade = atividade;
