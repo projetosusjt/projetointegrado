@@ -27,7 +27,7 @@
                                 Deseja realmente excluir este grupo?
                             </div>
                             <div class="modal-footer">
-                                <form action="ManterCliente.do" method="post">
+                                <form action="ManterGrupo.do" method="post">
                                     <input type="hidden" name="id" value="${grupo.grupo_id}" />
                                     <button type="submit" class="btn btn-primary" name="acao" value="Excluir">Sim</button>
                                     <button type="button" class="btn btn-default" data-dismiss="modal">N&atilde;o</button>
@@ -41,13 +41,13 @@
 				<c:import url="Menu.jsp"/>
                 <!-- Container Principal -->
                 <div id="main" class="container">
-            <h3 class="page-header">Visualizar Grupo # ${grupo.grupo_id}</h3>
+            <h3 class="page-header">Visualizar Grupo # ${grupo.grupo_id }</h3>
             <div class="row">
                 <div class="col-md-12">
                     <p><strong>Nome</strong>
                     </p>
                     <p>
-                        ${grupo.grupo_nome}
+                        ${grupo.grupo_nome }
                     </p>
                 </div>
             </div>
@@ -56,7 +56,7 @@
                     <p><strong>Numero</strong>
                     </p>
                     <p>
-                        ${grupo.numero}
+                        ${grupo.numero }
                     </p>
                 </div>
             </div>

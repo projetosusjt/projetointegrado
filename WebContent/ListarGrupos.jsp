@@ -80,7 +80,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-          					<c:forEach var="cliente" items="${lista }">
+          					<c:forEach var="grupo" items="${lista }">
                                        <tr>
                                             <td>
                                                ${grupo.grupo_id }

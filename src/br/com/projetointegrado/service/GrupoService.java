@@ -23,11 +23,15 @@ public class GrupoService {
 		dao.excluirGrupo(id);
 	}
 	public Grupo carregar(int id) {
-		Grupo to = dao.carregarGrupo(id);
-		return to;
+		
+		return dao.carregarGrupo(id);
 	}
 	public ArrayList<Grupo> findAll() {
 		ArrayList<Grupo> to = dao.findAll();
 		return to;
+	}
+	public ArrayList<Grupo> findAll(String chave) {
+		
+		return dao.findAll(chave);
 	}
 }

@@ -31,14 +31,19 @@ public class ManterGrupoController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		String pAcao = request.getParameter("acao");
-		int pNumero = Integer.parseInt(request.getParameter("numero"));
 		String pNome = request.getParameter("nome");
+		String pId = request.getParameter("id");
+		int id = -1;
+		try {
+			id = Integer.parseInt(pId);
+		} catch(NumberFormatException e) {
+			
+		}
 		
 		
 		//instanciar o javabean
 		Grupo grupo = new Grupo();
-		//grupo.setGrupo_id(grupo.getGrupo_id());
-		grupo.setNumero(pNumero);
+		grupo.setGrupo_id(id);
 		grupo.setGrupo_nome(pNome);
 		
 		//instanciar o service
@@ -47,7 +52,9 @@ public class ManterGrupoController extends HttpServlet {
 		HttpSession session = request.getSession(); 
 		//cs.carregar(grupo.getGrupo_id());
 		
-		if (pAcao.equals("Criar")) {    
+		if (pAcao.equals("Criar")) {  
+			int pNumero = Integer.parseInt(request.getParameter("numero"));
+			grupo.setNumero(pNumero);
 			cs.criar(grupo);    
 			ArrayList<Grupo>lista = new ArrayList<>();    
 			lista.add(grupo);    
@@ -70,7 +77,7 @@ public class ManterGrupoController extends HttpServlet {
 			view = request.getRequestDispatcher("VisualizarGrupo.jsp");
 		} else if (pAcao.equals("Visualizar")) {    
 			grupo = cs.carregar(grupo.getGrupo_id());    
-			request.setAttribute("cliente", grupo);    
+			request.setAttribute("grupo", grupo);    
 			view = request.getRequestDispatcher("VisualizarGrupo.jsp");
 		} else if (pAcao.equals("Editar")) {    
 			grupo = cs.carregar(grupo.getGrupo_id());    
