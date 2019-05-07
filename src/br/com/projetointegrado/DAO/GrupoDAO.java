@@ -60,22 +60,21 @@ public class GrupoDAO {
 	}
 	public Grupo carregarGrupo2(int id) {
 		Grupo to = new Grupo();
-		String sqlSelect = "SELECT orientador_id, numero, nome, p.* FROM grupo g"
-				+ "inner join professor p on g.orientador_id = p.id WHERE grupo.id =?";
+		String sqlSelect = "SELECT g.*, p.*, u.* FROM grupo g inner join professor p" + 
+				"on g.orientador_id = p.professor_id inner join usuario u on p.professor_id = u.id" + 
+				" WHERE g.id = ?";
 		try (Connection conn = ConnectionFactory.obtemConexao();
 				PreparedStatement stm = conn.prepareStatement(sqlSelect);) {
 			stm.setInt(1, to.getGrupo_id());
 			try (ResultSet rs = stm.executeQuery();) {
 				while(rs.next()) {
 					Professor prof = new Professor();
-					
+					prof.setProfessor_id(rs.getInt("id"));
+					prof.setNome(rs.getString("nome"));
 					to.setOrientador(prof);
 					to.setNumero(rs.getInt("numero"));
 					to.setGrupo_nome(rs.getString("nome"));
-					to.setGrupo_id(-1);
-					to.setOrientador(null);
-					to.setNumero(-1);
-					to.setGrupo_nome(null);
+					to.setGrupo_id(rs.getInt("id"));
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -115,15 +114,26 @@ public class GrupoDAO {
     }
 	public ArrayList<Grupo> findAll() {
 		ArrayList<Grupo> lista = new ArrayList<Grupo>();
-		String sqlSelect = "SELECT * FROM grupo";
+		String sqlSelect = "SELECT g.id as 'grupo_id'," + 
+				"    g.nome as 'grupo_nome'," + 
+				"    g.numero as 'numero do grupo'," + 
+				"    g.orientador_id as 'orientador'," + 
+				"	 p.matricula as 'matricula'," +
+				"	 p.professor_id as 'professor_id'," +
+				"    u.nome as 'orientador_nome' FROM grupo g left join professor p" + 
+				"	 on g.orientador_id = p.professor_id left join usuario u on p.professor_id = u.id";
 		try (Connection conn = ConnectionFactory.obtemConexao();
 				PreparedStatement stm = conn.prepareStatement(sqlSelect);) {
 			try (ResultSet rs = stm.executeQuery();) {
 				while (rs.next()) {
 					Grupo to = new Grupo();
-					to.setGrupo_nome(rs.getString("nome"));
-					to.setNumero(rs.getInt("numero"));
-					to.setGrupo_id(rs.getInt("id"));
+					Professor prof = new Professor();
+					prof.setProfessor_id(rs.getInt("professor_id"));
+					prof.setNome(rs.getString("orientador_nome"));
+					to.setOrientador(prof);
+					to.setNumero(rs.getInt("numero do grupo"));
+					to.setGrupo_nome(rs.getString("grupo_nome"));
+					to.setGrupo_id(rs.getInt("grupo_id"));
 					lista.add(to);
 				}
 			} catch (SQLException e) {
@@ -143,8 +153,12 @@ public class GrupoDAO {
 			try (ResultSet rs = stm.executeQuery();) {
 				while (rs.next()) {
 					Grupo to = new Grupo();
-					to.setGrupo_nome(rs.getString("nome"));
+					Professor prof = new Professor();
+					prof.setProfessor_id(rs.getInt("id"));
+					prof.setNome(rs.getString("nome"));
+					to.setOrientador(prof);
 					to.setNumero(rs.getInt("numero"));
+					to.setGrupo_nome(rs.getString("nome"));
 					to.setGrupo_id(rs.getInt("id"));
 					lista.add(to);
 				}

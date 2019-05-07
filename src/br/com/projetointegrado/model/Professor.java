@@ -8,6 +8,10 @@ public class Professor extends Usuario{
 	private Banca banca;
 	private ArrayList<Grupo> grupos;
 	
+	public Professor() {
+		super();
+	}
+	
 	public Professor(int id, String nome, String email, String senha) {
 		super(id, nome, email, senha);
 	}

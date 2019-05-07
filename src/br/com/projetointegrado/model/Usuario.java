@@ -4,7 +4,11 @@ public abstract class Usuario {
 	private int id;
 	private String nome, email, senha;
 
-
+	public Usuario()
+	{
+		
+	}
+	
 	public Usuario(int id, String nome, String email, String senha) {
 		super();
 		this.id = id;

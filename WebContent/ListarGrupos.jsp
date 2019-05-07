@@ -74,8 +74,9 @@
                             <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>Nome</th>
-                                    <th>Numero</th>
+                                    <th>Nome do Grupo</th>
+                                    <th>Numero do Grupo</th>
+                                    <th>Orientador</th>
                                     <th class="actions">Ações</th>
                                 </tr>
                             </thead>
@@ -90,6 +91,9 @@
                                             </td>
                                             <td>
                                                 ${grupo.numero }
+                                            </td>
+                                            <td>
+                                            	${grupo.getOrientador().getNome() }
                                             </td>
                                             <td class="actions">
                                                 <a class="btn btn-success btn-xs" href="ManterGrupo.do?acao=Visualizar&id=${grupo.grupo_id }">Visualizar</a>
