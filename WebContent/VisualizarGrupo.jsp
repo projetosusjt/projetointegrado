@@ -44,7 +44,7 @@
             <h3 class="page-header">Visualizar Grupo # ${grupo.grupo_id }</h3>
             <div class="row">
                 <div class="col-md-12">
-                    <p><strong>Nome</strong>
+                    <p><strong>Nome do Grupo</strong>
                     </p>
                     <p>
                         ${grupo.grupo_nome }
@@ -53,10 +53,19 @@
             </div>
             <div class="row">
                 <div class="col-md-6">
-                    <p><strong>Numero</strong>
+                    <p><strong>Numero do Grupo</strong>
                     </p>
                     <p>
                         ${grupo.numero }
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>Orientador</strong>
+                    </p>
+                    <p>
+                        ${grupo.getOrientador().getNome() }
                     </p>
                 </div>
             </div>

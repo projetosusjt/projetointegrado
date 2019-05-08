@@ -24,7 +24,7 @@ public class GrupoService {
 	}
 	public Grupo carregar(int id) {
 		
-		return dao.carregarGrupo(id);
+		return dao.carregarGrupo2(id);
 	}
 	public ArrayList<Grupo> findAll() {
 		ArrayList<Grupo> to = dao.findAll();

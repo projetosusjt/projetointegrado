@@ -60,21 +60,27 @@ public class GrupoDAO {
 	}
 	public Grupo carregarGrupo2(int id) {
 		Grupo to = new Grupo();
-		String sqlSelect = "SELECT g.*, p.*, u.* FROM grupo g inner join professor p" + 
-				"on g.orientador_id = p.professor_id inner join usuario u on p.professor_id = u.id" + 
+		String sqlSelect = "SELECT g.id as 'grupo_id', " + 
+				"				   g.nome as 'grupo_nome', " + 
+				"				   g.numero as 'numero do grupo', " + 
+				"				   g.orientador_id as 'orientador', " + 
+				"				   p.matricula as 'matricula', " + 
+				"				   p.professor_id as 'professor_id'," + 
+				"				   u.nome as 'orientador_nome' FROM grupo g inner join professor p" + 
+				"  on g.orientador_id = p.professor_id inner join usuario u on p.professor_id = u.id" + 
 				" WHERE g.id = ?";
 		try (Connection conn = ConnectionFactory.obtemConexao();
 				PreparedStatement stm = conn.prepareStatement(sqlSelect);) {
-			stm.setInt(1, to.getGrupo_id());
+			stm.setInt(1, id);
 			try (ResultSet rs = stm.executeQuery();) {
 				while(rs.next()) {
 					Professor prof = new Professor();
-					prof.setProfessor_id(rs.getInt("id"));
-					prof.setNome(rs.getString("nome"));
+					prof.setProfessor_id(rs.getInt("professor_id"));
+					prof.setNome(rs.getString("orientador_nome"));
 					to.setOrientador(prof);
-					to.setNumero(rs.getInt("numero"));
-					to.setGrupo_nome(rs.getString("nome"));
-					to.setGrupo_id(rs.getInt("id"));
+					to.setNumero(rs.getInt("numero do grupo"));
+					to.setGrupo_nome(rs.getString("grupo_nome"));
+					to.setGrupo_id(rs.getInt("grupo_id"));
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
